@@ -25,4 +25,8 @@ public class UserService {
     public void deleteUser(int id) {
         userRepository.delete(id);
     }
+
+    public void updateUser(User user) {
+        userRepository.update(user);
+    }
 }
