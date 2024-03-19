@@ -1,8 +1,9 @@
 package com.example.hwSeminarThree.service;
 
 import com.example.hwSeminarThree.domain.User;
-import com.example.hwSeminarThree.repository.UserRepository;
+import com.example.hwSeminarThree.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -12,7 +13,8 @@ import java.util.List;
 public class DataProcessingService {
 
     @Autowired
-    private UserRepository userRepository;
+    @Qualifier("repositoryH2")
+    private IUserRepository userRepository;
 
     public List<User> getUsers() {
         return userRepository.getUsers();
@@ -40,6 +42,6 @@ public class DataProcessingService {
     }
 
     public void addUser(User user) {
-        userRepository.getUsers().add(user);
+        userRepository.addUser(user);
     }
 }
