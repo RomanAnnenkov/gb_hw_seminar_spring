@@ -8,4 +8,8 @@ public class NotificationService {
     public void notifyUserCreated(User user) {
         System.out.println("A new user has been created: " + user.getName());
     }
+
+    public void sendNotification(String message) {
+        System.out.println(message);
+    }
 }
