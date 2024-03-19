@@ -14,24 +14,26 @@ public class DataProcessingService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserRepository getUserRepository() {
-        return userRepository;
+    public List<User> getUsers() {
+        return userRepository.getUsers();
     }
 
-    public List<User> sortUsersByAge(List<User> users) {
-        return users.stream()
+    public List<User> sortUsersByAge() {
+        return userRepository.getUsers().stream()
                 .sorted(Comparator.comparing(User::getAge))
                 .toList();
     }
 
-    public List<User> filterUsersByAge(List<User> users, int age) {
-        return users.stream()
+    public List<User> filterUsersByAge(int age) {
+        return userRepository.getUsers()
+                .stream()
                 .filter(user -> user.getAge() > age)
                 .toList();
     }
 
-    public double calculateAverageAge(List<User> users) {
-        return users.stream()
+    public double calculateAverageAge() {
+        return userRepository.getUsers()
+                .stream()
                 .mapToInt(User::getAge)
                 .average()
                 .orElse(0);

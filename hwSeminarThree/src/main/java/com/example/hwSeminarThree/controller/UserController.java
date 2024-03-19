@@ -17,7 +17,6 @@ public class UserController {
     public List<User> getUserList() {
         return registrationService
                 .getDataProcessingService()
-                .getUserRepository()
                 .getUsers();
     }
 
