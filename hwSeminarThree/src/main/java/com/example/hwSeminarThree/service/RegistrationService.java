@@ -10,16 +10,14 @@ public class RegistrationService {
     private DataProcessingService dataProcessingService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private NotificationService notificationService;
 
     public DataProcessingService getDataProcessingService() {
         return dataProcessingService;
     }
 
-    public void processRegistration(String name, int age, String email) {
+    public User processRegistration(String name, int age, String email) {
         User newUser = userService.createUser(name, age, email);
         dataProcessingService.addUser(newUser);
-        notificationService.notifyUserCreated(newUser);
+        return newUser;
     }
 }

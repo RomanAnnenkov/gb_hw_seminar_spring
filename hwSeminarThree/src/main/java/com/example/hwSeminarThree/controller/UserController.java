@@ -25,4 +25,9 @@ public class UserController {
         registrationService.getDataProcessingService().addUser(user);
         return "User added from body";
     }
+
+    @GetMapping("/param")
+    public User userAddFromParam(@RequestParam String name, @RequestParam int age, @RequestParam String email) {
+        return registrationService.processRegistration(name, age, email);
+    }
 }
