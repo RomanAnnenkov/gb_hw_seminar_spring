@@ -1,8 +1,9 @@
 package com.example.hwSeminarThree.service;
 
 import com.example.hwSeminarThree.domain.User;
-import com.example.hwSeminarThree.repository.UserRepository;
+import com.example.hwSeminarThree.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -12,32 +13,35 @@ import java.util.List;
 public class DataProcessingService {
 
     @Autowired
-    private UserRepository userRepository;
+    @Qualifier("repositoryH2")
+    private IUserRepository userRepository;
 
-    public UserRepository getUserRepository() {
-        return userRepository;
+    public List<User> getUsers() {
+        return userRepository.getUsers();
     }
 
-    public List<User> sortUsersByAge(List<User> users) {
-        return users.stream()
+    public List<User> sortUsersByAge() {
+        return userRepository.getUsers().stream()
                 .sorted(Comparator.comparing(User::getAge))
                 .toList();
     }
 
-    public List<User> filterUsersByAge(List<User> users, int age) {
-        return users.stream()
+    public List<User> filterUsersByAge(int age) {
+        return userRepository.getUsers()
+                .stream()
                 .filter(user -> user.getAge() > age)
                 .toList();
     }
 
-    public double calculateAverageAge(List<User> users) {
-        return users.stream()
+    public double calculateAverageAge() {
+        return userRepository.getUsers()
+                .stream()
                 .mapToInt(User::getAge)
                 .average()
                 .orElse(0);
     }
 
     public void addUser(User user) {
-        userRepository.getUsers().add(user);
+        userRepository.addUser(user);
     }
 }
