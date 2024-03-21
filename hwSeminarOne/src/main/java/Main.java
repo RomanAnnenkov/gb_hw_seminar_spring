@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+
 public class Main {
 
     //Создать проект с использованием Maven или Gradle, добавить в него несколько зависимостей и написать код, использующий эти зависимости.
@@ -10,5 +12,19 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("hw from seminar one");
+
+        Person personForSerialization = new Person("Ivan", "Petrov", 24);
+        System.out.println(personForSerialization);
+
+        Gson gson = new Gson();
+
+        String gsonPerson = gson.toJson(personForSerialization);
+        System.out.println(gsonPerson);
+
+        Person personForDeserialization = gson.fromJson(gsonPerson, Person.class);
+        System.out.println(personForDeserialization);
+
+        System.out.println(personForSerialization.equals(personForDeserialization));
+
     }
 }
