@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Characters from Rick and Morty</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:switch="${results}">
+    <h2 th:case="null">No characters found!</h2>
+    <div th:case="*">
+        <h2>Characters</h2>
+        <article id="block" th:each="result : ${results}">
+            <img th:src="${result.getImage()}">
+            <a th:href="${result.getId()}">
+                <h3 th:text="${result.getName()}"></h3>
+            </a>
+            <h4>Status - <span th:text="${result.getStatus()}"></span></h4>
+            <h4>Species - <span th:text="${result.getSpecies()}"></span></h4>
+            <h4>Type - <span th:text="${result.getType()}"></span></h4>
+            <h4>Gender - <span th:text="${result.getGender()}"></span></h4>
+            <h4>Created date - <span th:text="${result.getCreated()}"></span></h4>
+        </article>
+    </div>
+</div>
+</body>
+</html>

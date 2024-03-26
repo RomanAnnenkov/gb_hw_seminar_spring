@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${result.getName()}"></title>
+  <link th:href="@{/styles/main.css}" rel="stylesheet" />
+</head>
+<body>
+    <article id="block">
+      <img th:src="${result.getImage()}">
+      <h3 th:text="${result.getName()}"></h3>
+      <h4>Status - <span th:text="${result.getStatus()}"></span></h4>
+      <h4>Species - <span th:text="${result.getSpecies()}"></span></h4>
+      <h4>Type - <span th:text="${result.getType()}"></span></h4>
+      <h4>Gender - <span th:text="${result.getGender()}"></span></h4>
+      <h4>Created date - <span th:text="${result.getCreated()}"></span></h4>
+    </article>
+</body>
+</html>
