@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .logout()
                 .logoutSuccessUrl("/")
                 .and()
-                .exceptionHandling().accessDeniedPage("/forbidden");;
+                .exceptionHandling().accessDeniedPage("/forbidden");
         return http.build();
     }
 
