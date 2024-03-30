@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+  <h1>Home page.</h1>
+  <button type="button" onclick="
+    if(document.getElementById('hidden-cat')
+        .style.display=='none') {document.getElementById('hidden-cat')
+        .style.display=''}
+    else{document.getElementById('hidden-cat')
+        .style.display='none'}">Show/hide cat</button>
+  <div id="hidden-cat" style="display:none">
+      <img th:src="'data:image/jpeg;base64,' + ${cat}" alt="cat image">
+  </div>
+
+</body>
+</html>

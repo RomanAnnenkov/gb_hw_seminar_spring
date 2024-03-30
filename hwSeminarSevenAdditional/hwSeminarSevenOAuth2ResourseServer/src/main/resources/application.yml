@@ -1,5 +1,10 @@
 spring:
   application:
-    name: hwSeminarSevenOAuth2ResourseServer
+    name: hwSeminarSevenOAuth2ResourceServer
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:8081
 server:
   port: 8082
