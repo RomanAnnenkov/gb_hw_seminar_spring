@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+  site:
+    container_name: site
+    build: ./hwSeminarEightSite
+    environment:
+      SPRING_APPLICATION_JSON: '{"external":{"services":{"storeUri":"http://store:8081" ,"paymentUri":"http://payment:8082"}}}'
+    volumes:
+      - ./logs/site:/app/logs
+    ports:
+      - "8080:8080"
+    depends_on:
+      store:
+        condition: service_healthy
+      payment:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health-check"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  store:
+    container_name: store
+    build: ./hwSeminarEightStore
+    environment:
+      SPRING_APPLICATION_JSON: '{"spring":{"datasource":{"url":"jdbc:postgresql://db:5432/online_shop"}}}'
+    volumes:
+      - ./logs/store:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health-check"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  payment:
+    container_name: payment
+    build: ./hwSeminarEightPayment
+    environment:
+      SPRING_APPLICATION_JSON: '{"spring":{"datasource":{"url":"jdbc:postgresql://db:5432/online_shop"}}}'
+    volumes:
+      - ./logs/payment:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/health-check"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  db:
+    container_name: db
+    image: postgres:16.2-bookworm
+    shm_size: 128mb
+    env_file: .env
+    environment:
+      POSTGRES_PASSWORD: $ROOT_PASSWORD
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_DB: online_shop
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+

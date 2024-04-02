@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Approve</title>
+</head>
+<body>
+    <form action="#" th:action="@{/approve}" th:object="${product}" method="post">
+        <label for="id">ID</label>
+        <input readonly type="number" th:field="*{id}" id="id" placeholder="ID">
+        <br/>
+        <label for="name">Name</label>
+        <input readonly type="text" th:field="*{name}" id="name" placeholder="Product Name">
+        <br/>
+        <label for="price">Price</label>
+        <input readonly type="number" th:field="*{price}" id="price" placeholder="Product price">
+        <br/>
+        <label for="quantity">Quantity to buy</label>
+        <input type="number" th:field="*{quantity}" id="quantity" placeholder="Quantity">
+        <br/>
+        <input type="submit" value="Buy now">
+    </form>
+</body>
+</html>
