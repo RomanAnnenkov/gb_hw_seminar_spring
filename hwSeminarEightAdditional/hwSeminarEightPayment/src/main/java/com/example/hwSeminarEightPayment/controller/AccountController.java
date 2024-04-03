@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("/payment")
 public class AccountController {
 
     private AccountService accountService;

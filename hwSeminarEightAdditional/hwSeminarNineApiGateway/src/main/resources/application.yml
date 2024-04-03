@@ -1,3 +1,18 @@
 spring:
   application:
     name: hwSeminarNineApiGateway
+  main:
+    banner-mode: "off"
+  cloud:
+    gateway:
+      routes:
+        - id: hwSeminarEightStore
+          uri: http://localhost:8081/
+          predicates:
+            - Path=/store/**
+        - id: hwSeminarEightPayment
+          uri: http://localhost:8082/
+          predicates:
+            - Path=/payment/**
+server:
+  port: 8765

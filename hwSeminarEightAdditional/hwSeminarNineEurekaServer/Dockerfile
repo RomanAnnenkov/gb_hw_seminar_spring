@@ -10,5 +10,5 @@ COPY --from=builder /target/*.jar /app/app.jar
 
 WORKDIR /app
 RUN mkdir logs && chown 1000:1000 logs
-EXPOSE 8081
+EXPOSE 8761
 CMD ["java", "-jar", "app.jar"]
