@@ -1,3 +1,14 @@
 spring:
   application:
     name: hwSeminarEightPayment
+  main:
+    banner-mode: "off"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/online_shop
+    username: postgres
+    password: testpass
+  sql:
+    init:
+      mode: always
+server:
+  port: 8082

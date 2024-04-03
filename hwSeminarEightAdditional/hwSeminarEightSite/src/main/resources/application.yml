@@ -1,3 +1,9 @@
 spring:
   application:
-    name: hwSeminarEightSite
+    name: hwSeminarEightSite                                                                                                                                                       
+  main:
+    banner-mode: "off"
+external:
+  services:
+    storeUri: http://localhost:8081
+    paymentUri: http://localhost:8082

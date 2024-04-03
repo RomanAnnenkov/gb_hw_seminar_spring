@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Shop</title>
+</head>
+<body>
+<div th:switch="${products}">
+    <h2 th:case="null">No product available!</h2>
+    <div th:case="*">
+        <h2>Available product:</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:text="${product.quantity}"></td>
+                <td><a th:href="@{approve/{id}(id=${product.id})}">Buy</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<p>Your balance: <span th:text="${balance}"></span></p>
+</body>
+</html>
