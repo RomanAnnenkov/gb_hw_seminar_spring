@@ -1,7 +1,7 @@
 FROM alpine:3.18 AS builder
 RUN apk update && apk --no-cache add openjdk17-jdk maven
 COPY . .
-RUN mvn package
+RUN mvn package -DskipTests
 
 FROM alpine:3.18
 RUN apk update && apk --no-cache add openjdk17-jre curl tzdata

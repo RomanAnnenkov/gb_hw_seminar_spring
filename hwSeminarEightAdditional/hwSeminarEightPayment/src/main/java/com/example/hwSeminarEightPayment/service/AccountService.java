@@ -3,6 +3,7 @@ package com.example.hwSeminarEightPayment.service;
 import com.example.hwSeminarEightPayment.aspects.TrackUserAction;
 import com.example.hwSeminarEightPayment.exceptions.AccountNotFoundException;
 import com.example.hwSeminarEightPayment.exceptions.InsufficientFundsException;
+import com.example.hwSeminarEightPayment.exceptions.NegativeOrZeroAmountException;
 import com.example.hwSeminarEightPayment.model.Account;
 import com.example.hwSeminarEightPayment.repository.AccountRepository;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,10 @@ public class AccountService {
         try {
             Account sender = accountRepository.findAccountById(senderId);
             Account receiver = accountRepository.findAccountById(receiverID);
+
+            if (amount.compareTo(new BigDecimal(0)) <= 0) {
+                throw new NegativeOrZeroAmountException("Amount must be positive and more than zero");
+            }
 
             if (sender.getAmount().compareTo(amount) < 0) {
                 throw new InsufficientFundsException("There are insufficient funds in the account.");
