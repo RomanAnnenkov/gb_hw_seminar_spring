@@ -5,7 +5,7 @@ services:
     container_name: site
     build: ./hwSeminarEightSite
     environment:
-      SPRING_APPLICATION_JSON: '{"external":{"services":{"storeUri":"http://api-gateway:8765/store" ,"paymentUri":"http://api-gateway:8765/payment"}},"eureka":{"client":{"serviceUrl":{"defaultZone":"http://eureka:8761/eureka"}}}}'
+      SPRING_APPLICATION_JSON: '{"external":{"services":{"gatewayUri":"http://api-gateway:8765"}},"eureka":{"client":{"serviceUrl":{"defaultZone":"http://eureka:8761/eureka"}}}}'
     volumes:
       - ./logs/site:/app/logs
     ports:
@@ -42,7 +42,7 @@ services:
     container_name: api-gateway
     build: ./hwSeminarNineApiGateway
     environment:
-      SPRING_APPLICATION_JSON: '{"spring":{"cloud":{"gateway":{"routes":[{"id":"hwSeminarEightStore","uri": "http://store:8081/","predicates":["Path=/store/**"]},{"id": "hwSeminarEightPayment","uri":"http://payment:8082/","predicates":["Path=/payment/**"]}]}}},"eureka":{"client":{"serviceUrl":{"defaultZone":"http://eureka:8761/eureka"}}}}'
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://eureka:8761/eureka"}}}}'
     volumes:
       - ./logs/api-gateway:/app/logs
     healthcheck:
@@ -97,6 +97,8 @@ services:
       POSTGRES_DB: online_shop
     volumes:
       - ./db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s

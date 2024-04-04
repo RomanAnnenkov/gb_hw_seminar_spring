@@ -1,6 +1,6 @@
 spring:
   application:
-    name: hwSeminarEightStore
+    name: store
   main:
     banner-mode: "off"
   datasource:

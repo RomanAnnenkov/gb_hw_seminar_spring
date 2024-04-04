@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/store")
 public class ProductController {
 
     private ProductService productService;

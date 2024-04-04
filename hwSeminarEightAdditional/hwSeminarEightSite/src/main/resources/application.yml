@@ -5,5 +5,4 @@ spring:
     banner-mode: "off"
 external:
   services:
-    storeUri: http://localhost:8765/store
-    paymentUri: http://localhost:8765/payment
+    gatewayUri: http://localhost:8765

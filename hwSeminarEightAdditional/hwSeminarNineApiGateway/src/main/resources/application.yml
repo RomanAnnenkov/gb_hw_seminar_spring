@@ -5,14 +5,13 @@ spring:
     banner-mode: "off"
   cloud:
     gateway:
-      routes:
-        - id: hwSeminarEightStore
-          uri: http://localhost:8081/
-          predicates:
-            - Path=/store/**
-        - id: hwSeminarEightPayment
-          uri: http://localhost:8082/
-          predicates:
-            - Path=/payment/**
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+eureka:
+  client:
+    register-with-eureka: false
+
 server:
   port: 8765
