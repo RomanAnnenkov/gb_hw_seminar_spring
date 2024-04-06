@@ -8,6 +8,5 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties("external.services")
 public class ExternalServices {
-    private String paymentUri;
-    private String storeUri;
+    private String gatewayUri;
 }

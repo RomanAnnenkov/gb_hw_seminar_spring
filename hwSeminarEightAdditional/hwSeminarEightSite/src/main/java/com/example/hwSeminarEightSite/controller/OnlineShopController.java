@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @AllArgsConstructor
 public class OnlineShopController {
@@ -15,8 +17,19 @@ public class OnlineShopController {
 
     @GetMapping
     public String showMainPage(Model model) {
-        model.addAttribute("products", onlineShopService.getAvailableProducts());
-        model.addAttribute("balance", onlineShopService.getAccountAmountById(2L));
+        List<Product> products = null;
+        try {
+            products = onlineShopService.getAvailableProducts();
+        } catch (Exception ignored) {
+        }
+        model.addAttribute("products", products);
+
+        String balance = null;
+        try {
+            balance = onlineShopService.getAccountAmountById(2L);
+        } catch (Exception ignored) {
+        }
+        model.addAttribute("balance", balance == null ? "" : balance);
         return "index.html";
     }
 
@@ -27,9 +40,9 @@ public class OnlineShopController {
     }
 
     @PostMapping("approve")
-    public String approve(Model model,Product product) {
+    public String approve(Model model, Product product) {
         try {
-            model.addAttribute("product" , onlineShopService.buyProduct(product));
+            model.addAttribute("product", onlineShopService.buyProduct(product));
             return "success";
         } catch (Exception e) {
             return "error";

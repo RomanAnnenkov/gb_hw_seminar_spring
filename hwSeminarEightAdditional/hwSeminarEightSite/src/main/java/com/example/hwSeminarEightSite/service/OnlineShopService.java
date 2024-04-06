@@ -24,7 +24,7 @@ public class OnlineShopService {
 
     public List<Product> getAvailableProducts() {
         ResponseEntity<List<Product>> response = restTemplate.exchange(
-                services.getStoreUri(),
+                services.getGatewayUri() + "/store",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
@@ -34,7 +34,7 @@ public class OnlineShopService {
 
     public String getAccountAmountById(Long id) {
         ResponseEntity<String> response = restTemplate.exchange(
-          services.getPaymentUri() + "/account/" + id,
+          services.getGatewayUri() + "/payment/account/" + id,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
@@ -44,7 +44,7 @@ public class OnlineShopService {
 
     public Product getProductById(Long id) {
         ResponseEntity<Product> response = restTemplate.exchange(
-                services.getStoreUri() + "/" + id,
+                services.getGatewayUri() + "/store/" + id,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
@@ -81,7 +81,7 @@ public class OnlineShopService {
     private void transferMoney(Long senderId, Long receiverId, BigDecimal amount) {
         ChangeAmountRequest request = new ChangeAmountRequest(senderId, receiverId, amount);
         restTemplate.postForEntity(
-                services.getPaymentUri() + "/transfer",
+                services.getGatewayUri() + "/payment/transfer",
                 request,
                 String.class
         );
@@ -89,7 +89,7 @@ public class OnlineShopService {
 
     private ResponseEntity<Product> getProductFromStore(Product product) {
         return restTemplate.postForEntity(
-                services.getStoreUri() + "/pick-up",
+                services.getGatewayUri() + "/store/pick-up",
                 product,
                 Product.class
         );

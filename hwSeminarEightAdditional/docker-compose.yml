@@ -5,7 +5,7 @@ services:
     container_name: site
     build: ./hwSeminarEightSite
     environment:
-      SPRING_APPLICATION_JSON: '{"external":{"services":{"storeUri":"http://store:8081" ,"paymentUri":"http://payment:8082"}}}'
+      SPRING_APPLICATION_JSON: '{"external":{"services":{"gatewayUri":"http://api-gateway:8765"}},"eureka":{"client":{"serviceUrl":{"defaultZone":"http://eureka:8761/eureka"}}}}'
     volumes:
       - ./logs/site:/app/logs
     ports:
@@ -21,12 +21,42 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+  
+  eureka:
+    container_name: eureka
+    build: ./hwSeminarNineEurekaServer
+    environment:
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"service-url":{"defaultZone":"http://eureka:8761/eureka"}}}}'
+    volumes:
+      - ./logs/eureka:/app/logs
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/health-check"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  api-gateway:
+    container_name: api-gateway
+    build: ./hwSeminarNineApiGateway
+    environment:
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://eureka:8761/eureka"}}}}'
+    volumes:
+      - ./logs/api-gateway:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8765/health-check"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   store:
     container_name: store
     build: ./hwSeminarEightStore
     environment:
-      SPRING_APPLICATION_JSON: '{"spring":{"datasource":{"url":"jdbc:postgresql://db:5432/online_shop"}}}'
+      SPRING_APPLICATION_JSON: '{"spring":{"datasource":{"url":"jdbc:postgresql://db:5432/online_shop"}},"eureka":{"client":{"serviceUrl":{"defaultZone":"http://eureka:8761/eureka"}}}}'
     volumes:
       - ./logs/store:/app/logs
     depends_on:
@@ -43,7 +73,7 @@ services:
     container_name: payment
     build: ./hwSeminarEightPayment
     environment:
-      SPRING_APPLICATION_JSON: '{"spring":{"datasource":{"url":"jdbc:postgresql://db:5432/online_shop"}}}'
+      SPRING_APPLICATION_JSON: '{"spring":{"datasource":{"url":"jdbc:postgresql://db:5432/online_shop"}},"eureka":{"client":{"serviceUrl":{"defaultZone":"http://eureka:8761/eureka"}}}}'
     volumes:
       - ./logs/payment:/app/logs
     depends_on:

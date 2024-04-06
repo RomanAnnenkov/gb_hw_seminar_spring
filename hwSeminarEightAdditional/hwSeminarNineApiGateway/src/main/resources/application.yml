@@ -1,3 +1,17 @@
 spring:
   application:
     name: hwSeminarNineApiGateway
+  main:
+    banner-mode: "off"
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+eureka:
+  client:
+    register-with-eureka: false
+
+server:
+  port: 8765
