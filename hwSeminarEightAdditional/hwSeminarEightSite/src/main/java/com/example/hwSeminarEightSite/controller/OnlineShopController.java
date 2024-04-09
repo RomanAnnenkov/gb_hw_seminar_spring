@@ -63,7 +63,7 @@ public class OnlineShopController {
                         .stream()
                         .anyMatch(x -> x.getAuthority()
                                 .equals("ROLE_ADMIN"))) {
-            logUserRequest(String.format("GET /admin " + authentication.getName() + " SUCCESS"));
+            logUserRequest("GET /admin SUCCESS");
             return "admin";
         }
         logUserRequest("GET /admin DENIED");

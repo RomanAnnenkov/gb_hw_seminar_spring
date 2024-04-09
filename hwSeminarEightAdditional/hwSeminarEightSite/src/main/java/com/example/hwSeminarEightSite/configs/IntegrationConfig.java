@@ -9,6 +9,7 @@ import org.springframework.integration.core.GenericTransformer;
 import org.springframework.integration.file.FileWritingMessageHandler;
 import org.springframework.integration.file.support.FileExistsMode;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -33,7 +34,13 @@ public class IntegrationConfig {
         return textMessage -> {
             LocalDateTime currentDateTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-            return currentDateTime.format(formatter) + " " + textMessage;
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            return currentDateTime.format(formatter) +
+                    " username: '" +
+                    (authentication != null ? authentication.getName() : "unknown") +
+                    "' " +
+                    textMessage;
         };
     }
 
