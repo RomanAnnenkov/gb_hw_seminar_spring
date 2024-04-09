@@ -31,5 +31,9 @@
     </div>
 </div>
 <p>Your balance: <span th:text="${balance}"></span></p>
+<p>Click <a href="/admin">here</a> to go to the admin page.</p>
+<form action="/logout" method="get">
+    <input type="submit" value="Logout"/>
+</form>
 </body>
 </html>
