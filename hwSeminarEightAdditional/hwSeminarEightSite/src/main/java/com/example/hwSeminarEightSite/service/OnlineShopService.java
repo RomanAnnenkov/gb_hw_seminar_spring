@@ -1,5 +1,6 @@
 package com.example.hwSeminarEightSite.service;
 
+import com.example.hwSeminarEightSite.aspectrs.TrackUserAction;
 import com.example.hwSeminarEightSite.configs.ExternalServices;
 import com.example.hwSeminarEightSite.model.ChangeAmountRequest;
 import com.example.hwSeminarEightSite.model.Product;
@@ -7,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
