@@ -1,6 +1,5 @@
 package com.example.hwSeminarEightSite.service;
 
-import com.example.hwSeminarEightSite.aspectrs.TrackUserAction;
 import com.example.hwSeminarEightSite.configs.ExternalServices;
 import com.example.hwSeminarEightSite.model.ChangeAmountRequest;
 import com.example.hwSeminarEightSite.model.Product;
@@ -10,13 +9,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -102,7 +101,7 @@ public class OnlineShopService {
 
     private HttpHeaders getAuthHeadersForStore() {
         HttpHeaders headers = new HttpHeaders();
-        String authBase64 = Base64.getEncoder().encodeToString("user:password".getBytes());
+        String authBase64 = Base64.getEncoder().encodeToString(Objects.requireNonNull(services).getStoreBasicAuth().getBytes());
         headers.add("Authorization", "Basic " + authBase64);
         return headers;
     }

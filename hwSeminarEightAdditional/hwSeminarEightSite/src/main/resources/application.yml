@@ -6,3 +6,4 @@ spring:
 external:
   services:
     gatewayUri: http://localhost:8765
+    storeBasicAuth: "user:password"

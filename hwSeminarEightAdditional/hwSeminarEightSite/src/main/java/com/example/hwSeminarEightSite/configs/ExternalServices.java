@@ -9,4 +9,5 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("external.services")
 public class ExternalServices {
     private String gatewayUri;
+    private String storeBasicAuth;
 }
