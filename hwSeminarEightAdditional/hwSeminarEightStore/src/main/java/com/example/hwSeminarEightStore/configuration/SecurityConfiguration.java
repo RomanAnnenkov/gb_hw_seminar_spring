@@ -1,4 +1,4 @@
-package com.example.hwSeminarEightSite.configs;
+package com.example.hwSeminarEightStore.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -22,7 +22,7 @@ public class SecurityConfig {
                         .requestMatchers("/health-check").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults())
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/pick-up"))
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
@@ -41,5 +41,4 @@ public class SecurityConfig {
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
     }
-
 }

@@ -6,6 +6,8 @@ import com.example.hwSeminarEightSite.model.ChangeAmountRequest;
 import com.example.hwSeminarEightSite.model.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -28,7 +31,7 @@ public class OnlineShopService {
         ResponseEntity<List<Product>> response = restTemplate.exchange(
                 services.getGatewayUri() + "/store",
                 HttpMethod.GET,
-                null,
+                new HttpEntity<>(getAuthHeadersForStore()),
                 new ParameterizedTypeReference<>() {
                 });
         return response.getBody();
@@ -36,7 +39,7 @@ public class OnlineShopService {
 
     public String getAccountAmountById(Long id) {
         ResponseEntity<String> response = restTemplate.exchange(
-          services.getGatewayUri() + "/payment/account/" + id,
+                services.getGatewayUri() + "/payment/account/" + id,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
@@ -48,7 +51,7 @@ public class OnlineShopService {
         ResponseEntity<Product> response = restTemplate.exchange(
                 services.getGatewayUri() + "/store/" + id,
                 HttpMethod.GET,
-                null,
+                new HttpEntity<>(getAuthHeadersForStore()),
                 new ParameterizedTypeReference<>() {
                 });
         return response.getBody();
@@ -66,18 +69,18 @@ public class OnlineShopService {
         BigDecimal amount = productToPickUp.getPrice().multiply(BigDecimal.valueOf(quantity));
 
         try {
-            transferMoney(2L,1L, amount);
+            transferMoney(2L, 1L, amount);
         } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage());
         }
 
-        ResponseEntity<Product> productResult = getProductFromStore(productToPickUp);
-        if (!productResult.getStatusCode().is2xxSuccessful()) {
-            transferMoney(1L,2L, amount);
+        try {
+            ResponseEntity<Product> productResult = getProductFromStore(productToPickUp);
+            return productResult.getBody();
+        } catch (Exception e) {
+            transferMoney(1L, 2L, amount);
             throw new RuntimeException("Transfer error");
         }
-
-        return productResult.getBody();
     }
 
     private void transferMoney(Long senderId, Long receiverId, BigDecimal amount) {
@@ -92,9 +95,16 @@ public class OnlineShopService {
     private ResponseEntity<Product> getProductFromStore(Product product) {
         return restTemplate.postForEntity(
                 services.getGatewayUri() + "/store/pick-up",
-                product,
+                new HttpEntity<>(product, getAuthHeadersForStore()),
                 Product.class
         );
+    }
+
+    private HttpHeaders getAuthHeadersForStore() {
+        HttpHeaders headers = new HttpHeaders();
+        String authBase64 = Base64.getEncoder().encodeToString("user:password".getBytes());
+        headers.add("Authorization", "Basic " + authBase64);
+        return headers;
     }
 
 }
